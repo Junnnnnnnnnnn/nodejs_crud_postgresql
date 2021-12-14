@@ -1,8 +1,6 @@
 var dotenv = require('dotenv');
 var path = require('path');
 dotenv.config({path: path.join(__dirname, "/.env")});
-var db = require("./db_config");
-
 var createError = require('http-errors');
 var express = require('express');
 
@@ -12,10 +10,11 @@ var compress = require("compression");
 
 
 var routers = require("./routes/router");
+const { syncBuiltinESMExports } = require('module');
 
 var app = express();
 
-
+console.log("SETTING!!!! :::: !!!!");
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -27,11 +26,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(compress());
-
-app.get("*", (res,req,next) => {
-  console.log("DIR ::: " + __dirname + " DB_USER ::: " + process.env.DB_USER + " DB_HOST ::: " + process.env.DB_HOST);
-  next();
-})
 app.use(routers);
 
 // catch 404 and forward to error handler

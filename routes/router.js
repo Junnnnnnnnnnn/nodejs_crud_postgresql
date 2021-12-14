@@ -1,9 +1,9 @@
 var express = require("express");
 var router = express.Router();
-var index = require("./index");
-var users = require("./users");
+var home = require("./home/controller/HomeController");
+var film = require("./film/controller/FilmController");
 
-router.use("/", index);
-router.use("/users", users);
+router.use("/", home);
+router.use("/film", film);
 
 module.exports = router;
