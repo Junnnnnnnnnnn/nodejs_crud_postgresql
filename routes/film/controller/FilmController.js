@@ -1,12 +1,13 @@
-var express = require("express");
-var router = express.Router();
-var FilmService = require("../service/FilmService");
+var filmService = require("../service/FilmService");
+var isError = (result) => {
+    return result.info.error ? true : false;
+}
 
-router.get("/", (req, res, next) => {
-    var filmService = FilmService();
-    filmService.getFilmCateList().then(result=>{
-        res.send(result);
-    })
-});
-
-module.exports = router;
+exports.getFilmInfo = async (req, res, next) => {
+    var result = await filmService.getFilmInfo(req.query);
+    if(isError(result)){
+        res.status(500).send(result);
+        return;
+    }
+    res.send(result);
+};

@@ -1,16 +1,6 @@
-var Session = require("../../../db_config");
-var db = Session();
-module.exports = () => {
-    
-    function getFilmCateList(){
-        return new Promise((resolve, reject) => {
-            db.selectOne("select now()").then(result=>{
-                resolve(result);
-            });
-        })
-    }
-    return {
-        getFilmCateList
-    }
+var session = require("../../../db_config");
 
-};
+exports.getFilmInfo = async (map) => {
+    var title = map.title ? "and a.title = :title" : "";
+    return await session.selectOne("select * from film a where 1=1" + title, map || {});
+};1
