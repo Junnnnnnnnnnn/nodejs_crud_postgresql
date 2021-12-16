@@ -5,8 +5,9 @@ var film = require("./film/controller/FilmController");
 
 router.use("/", home);
 router.get("/filmInfo", film.getFilmInfo);
-router.use((req, res, next)=>{
-    console.log("에러 입니다");
-})
+router.get("/filmList", film.getFilmList);
+router.post("/category", film.insertCate);
+router.put("/category", film.updateCate);
+router.delete("/category", film.deleteCate);
 
 module.exports = router;

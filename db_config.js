@@ -1,3 +1,4 @@
+const { query } = require("express");
 var pg = require("pg");
 var session = new pg.Client({
     user: process.env.DB_USER,
@@ -32,17 +33,72 @@ var convertSqlParam = (sql, object) => {
     return sql;
 }
 
+sessionConnect();
+
 exports.selectOne = async (sql, object) =>{
 
-    sessionConnect();
     sql = isObjectNull(object)? sql: convertSqlParam(sql, object);
-    console.log("1");
+    try {
+        var query = await session.query(sql);
+        if(query.rows.length > 1){
+            return { error: "info size is just one! but " + query.rows.length + " size"};
+        }
+
+        if(query.rows.length <= 0){
+            return {};
+        }
+
+        return query.rows[0];
+
+    } catch (error) {
+        console.log(new Error(error));
+        return { error: new Error(error).message };
+    }
+}
+
+exports.selectList = async (sql, object) => {
+
+    sql = isObjectNull(object)? sql: convertSqlParam(sql, object);
+    
+    try {
+        var query = await session.query(sql);
+        return query.rows;
+    } catch (error) {
+        console.log(error);
+        return { error: new Error(error).message};
+    }
+}
+
+exports.insert = async (sql , object) => {
+    sql = isObjectNull(object) ? sql : convertSqlParam(sql, object);
+
+    try {
+        var query = await session.query(sql);
+        return query.rows[0];
+    } catch (error) {
+        console.log(new Error(error));   
+    }
+}
+
+exports.update = async (sql, object) => {
+    sql = isObjectNull(object)? sql : convertSqlParam(sql, object);
+
     try {
         return (await session.query(sql)).rows[0];
     } catch (error) {
         console.log(new Error(error));
-        return {
-            error: new Error(error).message
-        };
+        return new Error(error).message;
+    }
+}
+
+exports.delete = async (sql, object) => {
+    sql = isObjectNull(object)? sql: convertSqlParam(sql, object);
+
+    try {
+        return (await session.query(sql)).rows[0];
+    } catch (error) {
+        console.log(new Error(error));
+        return new Error(error).message;
+        
     }
 }
