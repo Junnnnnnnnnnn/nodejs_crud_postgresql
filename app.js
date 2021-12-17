@@ -7,7 +7,7 @@ var express = require('express');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var compress = require("compression");
-
+var cors = require("cors");
 
 var routers = require("./routes/router");
 const { syncBuiltinESMExports } = require('module');
@@ -26,6 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(compress());
+app.use(cors());
 app.use(routers);
 
 // catch 404 and forward to error handler
