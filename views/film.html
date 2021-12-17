@@ -1,0 +1,99 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <title>Document</title>
+
+    <script type="text/javascript">
+        var $___HOST = "http://localhost:3000"
+        $(function(){
+            console.log("hello");
+
+            $(document).on("click",".getInfo",function(){
+                console.log("GET INFO");
+                var result = ajaxConn({
+                    url: $___HOST + "/filmInfo",
+                    title: "Academy Dinosaur"
+                });
+                $(".data").html(JSON.stringify(result));
+            });
+
+            $(document).on("click",".getList",function(){
+                console.log("GET List");
+                var result = ajaxConn({
+                    url: $___HOST + "/filmList",
+                });
+                $(".data").html(JSON.stringify(result));
+            });
+
+            $(document).on("click",".post",function(){
+                console.log("POST");
+                var result = ajaxConn({
+                    url: $___HOST + "/category",
+                    type: "post",
+                    name: "쥴리",
+                });
+                $(".data").html(JSON.stringify(result));
+            });
+
+            $(document).on("click",".put",function(){
+                console.log("PUT");
+                var result = ajaxConn({
+                    url: $___HOST + "/category",
+                    type: "put",
+                    name: "쥴리",
+                    category_id: 21,
+                });
+                $(".data").html(JSON.stringify(result));
+            });
+
+            $(document).on("click",".delete",function(){
+                console.log("DELETE");
+                var result = ajaxConn({
+                    url: $___HOST + "/category?category_id=29",
+                    type: "delete",
+                });
+                $(".data").html(JSON.stringify(result));
+            });
+
+        });
+
+        function ajaxConn(object){
+            var result = new Object();
+            
+            $.ajax({
+                url: object.url,
+                data: object,
+                type: object.type,
+                datatype: "json",
+                async: false,
+                success: (data) => {
+                    result = data;
+                }
+            });
+            return result;
+        }
+    </script>
+</head>
+<body>
+    <button class="getInfo">
+        GET INFO
+    </button>
+    <button class="getList">
+        GET LIST
+    </button>
+    <button class="post">
+        POST
+    </button>
+    <button class="put">
+        PUT
+    </button>
+    <button class="delete">
+        DELETE
+    </button>
+    <div class="data" style="margin-top: 100px">
+    </div>
+</body>
+</html>
