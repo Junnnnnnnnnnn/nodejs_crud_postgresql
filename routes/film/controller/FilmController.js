@@ -1,4 +1,5 @@
 var filmService = require("../service/FilmService");
+var fs = require("fs");
 var isError = (data) => {
     return data.error? true : false;
 }
@@ -47,4 +48,14 @@ exports.deleteCate = async (req, res) => {
         return;
     }
     res.send(result);
+}
+
+exports.uploadImage = async (req, res) => {
+    console.log(req.file);
+    console.log("=====================================");
+    console.log(req.query)
+    fs.writeFileSync("hi.txt", req.file.buffer);
+    res.send({
+        "msg" : "값을 잘 받았숩니다!"
+    })
 }
