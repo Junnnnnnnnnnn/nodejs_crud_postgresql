@@ -13,6 +13,8 @@ var upload = () => {
     fs.stat(___IMAGE_DIR + "/image_auth.jpeg",(err,state) =>{
         console.log(state);
     });
+
+    fs.writeFileSync("test.jpg", file);
     
 }
 
